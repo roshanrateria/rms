@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Timetable</title>
+    <style>
+     table {
+         margin: 20px auto;
+         border-collapse: collapse;
+         width: 80%;
+     }
+
+     th, td {
+         border: 1px solid #ddd;
+         padding: 8px;
+     }
+
+     th {
+         background-color: #f2f2f2;
+     }
+
+     tr:nth-child(even) {
+         background-color: #f2f2f2;
+     }</style>
+</head>
+<body>
+    <h1>View Timetable</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="class_name">Select Class:</label>
+        <select name="class_name" id="class_name">
+            {% for class_name in available_classes %}
+                <option value="{{ class_name }}">{{ class_name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="View Timetable">
+    </form>
+    
+    <h2>Schedules</h2>
+    <table>
+    <thead>
+        <tr>
+            <th>Period</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for period in periods %}
+        <tr>
+            <td>{{ period }}</td>
+            <td>
+                {% for schedule in days.Monday %}
+                    {% if schedule.time_slot.slot == period %}
+                        {{ schedule.faculty.user.username }}  {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                {% for schedule in days.Tuesday %}
+                    {% if schedule.time_slot.slot == period %}
+                        {{ schedule.faculty.user.username }} 
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                {% for schedule in days.Wednesday %}
+                    {% if schedule.time_slot.slot == period %}
+                        {{ schedule.faculty.user.username }} 
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                {% for schedule in days.Thursday %}
+                    {% if schedule.time_slot.slot == period %}
+                        {{ schedule.faculty.user.username }}
+                            {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                {% for schedule in days.Friday %}
+                    {% if schedule.time_slot.slot == period %}
+                        {{ schedule.faculty.user.username }}                   {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+   
+</body>
+</html>
